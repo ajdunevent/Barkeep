@@ -1,0 +1,53 @@
+<!--
+  Mirrors ticket-box's own sm.puri.phosh.plugins.ticket-box.gschema.xml
+  shape and naming convention (schema id sm.puri.phosh.plugins.<name>,
+  path /mobi/phosh/plugins/<name>/) -- confirmed directly from that
+  real, shipping plugin's own schema file, not invented.
+
+  group-ids stores UUIDs as plain strings (Card::group_ids is
+  Vec<Uuid> -- GSettings has no native UUID type, so these round-trip
+  through their own to_string()/parse() at the read site). An empty
+  array means "no group filter" (all groups), matching our own earlier
+  decision that this plugin's own filter deliberately isn't restricted
+  to a single group the way the main app's own sidebar filter is. Any
+  id in here that no longer matches a real Group (the group was since
+  deleted or renamed in the main app) is silently ignored at read time,
+  the same defensive-fallback pattern Card::group_ids itself already
+  uses for exactly this scenario.
+-->
+<schemalist>
+  <schema id="sm.puri.phosh.plugins.barkeep"
+          path="/mobi/phosh/plugins/barkeep/">
+    <key name="group-ids" type="as">
+      <default>[]</default>
+      <summary>Group filter</summary>
+      <description>
+        Only show cards belonging to at least one of these groups (by
+        id). An empty list means no group filter -- cards from every
+        group are shown, subject to the other filters below.
+      </description>
+    </key>
+    <key name="favorites-only" type="b">
+      <default>false</default>
+      <summary>Favorites only</summary>
+      <description>
+        Only show starred cards.
+      </description>
+    </key>
+    <key name="show-archived" type="b">
+      <default>false</default>
+      <summary>Show archived cards</summary>
+      <description>
+        Include archived cards, which are hidden by default.
+      </description>
+    </key>
+    <key name="valid-only" type="b">
+      <default>false</default>
+      <summary>Valid only</summary>
+      <description>
+        Hide cards that are not currently valid (before their own
+        valid-from date, or past their own expiry date).
+      </description>
+    </key>
+  </schema>
+</schemalist>

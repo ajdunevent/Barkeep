@@ -1,0 +1,28 @@
+[workspace]
+resolver = "2"
+members = [
+    "app",
+    "barkeep-core",
+    "barkeep-lockscreen",
+    "barkeep-lockscreen-prefs",
+]
+# Lock-screen widget development paused (see barkeep-lockscreen/src/lib.rs's
+# own recent thread-diagnostic work) to focus on shipping the main app
+# first -- default-members means a plain `cargo build`/`cargo build
+# --release`/`cargo deb -p barkeep` (no --workspace, no explicit -p for
+# the lockscreen crates) only ever touches the app and its own
+# barkeep-core dependency, not the lockscreen plugin crates. They're
+# still genuine workspace members (not excluded, not split into a
+# separate repo) -- still fully buildable/testable via `cargo build -p
+# barkeep-lockscreen` or `cargo build --workspace` whenever that work
+# resumes, still sharing this same Cargo.lock/target directory/
+# [profile.release] settings, barkeep-core still a plain path
+# dependency for both without any cross-repo friction.
+default-members = [
+    "app",
+    "barkeep-core",
+]
+
+[profile.release]
+opt-level = "s"
+lto = true

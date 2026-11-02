@@ -1,0 +1,58 @@
+# Plugin metadata Phosh itself scans for at runtime to discover this
+# plugin and its own prefs counterpart -- confirmed directly against
+# the real, shipping plugins/ticket-box/ticket-box.desktop.in.in's own
+# exact shape (same [Plugin]/[Prefs] sections, same keys), not guessed
+# at. Filed as .plugin.in rather than a final .plugin: most values here
+# are already fixed and known (this plugin's own name, its lock-screen
+# type, the .so filename pattern Cargo's own cdylib output already
+# matches -- confirmed from lib.rs's own PLUGIN_NAME and
+# barkeep-lockscreen-prefs's own equivalent), so this isn't a two-stage
+# meson/i18n template the way the real ticket-box.desktop.in.in is
+# (Barkeep has no translation infrastructure at all, so there's no
+# gettext merge step to run here) -- only @plugins_dir@/
+# @plugin_prefs_dir@ stay as explicit placeholders, since those are
+# real filesystem paths that depend on a packaging decision not yet
+# made (see this crate's own README/packaging notes once that
+# discussion happens). Whatever actually produces the final,
+# installed .plugin file just needs to substitute those two and drop
+# the .in suffix -- a sed/envsubst call, a small build script, or
+# a packaging tool's own templating, not necessarily meson specifically.
+#
+# Where these two actual values come from: confirmed directly from
+# upstream Phosh's own real plugins/meson.build (not guessed) -- the
+# phosh-plugins pkg-config module exposes per-type variables, not one
+# generic path. The exact ones needed here:
+#   pkg-config --variable=lockscreen_plugins_dir phosh-plugins
+#   pkg-config --variable=lockscreen_prefs_dir phosh-plugins
+# (Confirmed these are genuinely two different directories, not the
+# same path twice -- upstream's own meson.build derives them from two
+# separate underlying variables.)
+#
+# Confirmed on a real FLX1S (aarch64, FuriOS/Debian forky):
+#   lockscreen_plugins_dir = /usr/lib/aarch64-linux-gnu/phosh/plugins
+#   lockscreen_prefs_dir   = /usr/lib/aarch64-linux-gnu/phosh/plugins/prefs
+# The aarch64-linux-gnu segment is Debian's own multiarch tuple, so
+# this exact string is specific to that one device's own architecture
+# -- a different target architecture would resolve to a different
+# path, which is exactly why this stays a live pkg-config query at
+# package-build time rather than a value hardcoded here.
+#
+# This file's own final install location: also lockscreen_plugins_dir
+# (not lockscreen_prefs_dir, and not some third location) -- confirmed
+# directly from the real ticket-box/meson.build's own install_dir for
+# its own .desktop.in.in -> .plugin merge step, which uses the exact
+# same plugins_dir variable its own main .so install_dir does. So
+# @plugin_prefs_dir@ above is used only for the [Prefs] section's own
+# Plugin= line -- this file as a whole still installs next to
+# libbarkeep_lockscreen.so, not next to
+# libbarkeep_lockscreen_prefs.so.
+[Plugin]
+Id=barkeep
+Name=Barkeep
+Types=lockscreen;
+Comment=Show your loyalty cards on the lock screen.
+Plugin=@plugins_dir@/libbarkeep_lockscreen.so
+
+[Prefs]
+Id=barkeep-prefs
+Plugin=@plugin_prefs_dir@/libbarkeep_lockscreen_prefs.so

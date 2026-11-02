@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>net.dunevent.Barkeep</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Barkeep</name>
+  <summary>Loyalty card wallet</summary>
+  <developer id="net.dunevent">
+    <name>AJ Dunevent</name>
+  </developer>
+  <description>
+    <p>Barkeep, the BARcode KEEPer, is an adaptive loyalty card wallet for mobile Linux. Cards are stored on the device, scanned with the camera, and shown as barcodes ready for a checkout scanner.</p>
+  </description>
+  <launchable type="desktop-id">net.dunevent.Barkeep.desktop</launchable>
+  <provides>
+    <binary>barkeep</binary>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <supports>
+    <control>pointer</control>
+    <control>keyboard</control>
+    <control>touch</control>
+  </supports>
+  <recommends>
+    <display_length compare="ge">360</display_length>
+  </recommends>
+  <releases>
+    <release version="0.1.0" date="2026-10-31"/>
+  </releases>
+</component>

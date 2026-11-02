@@ -1,0 +1,55 @@
+{
+    "app-id": "net.dunevent.Barkeep",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "50",
+    "sdk": "org.gnome.Sdk",
+    "sdk-extensions": [
+        "org.freedesktop.Sdk.Extension.rust-stable"
+    ],
+    "command": "barkeep",
+    "finish-args": [
+        "--share=ipc",
+        "--socket=wayland",
+        "--socket=fallback-x11",
+        "--device=all",
+        "--system-talk-name=net.hadess.SensorProxy"
+    ],
+    "build-options": {
+        "append-path": "/usr/lib/sdk/rust-stable/bin",
+        "env": {
+            "CARGO_HOME": "/run/build/barkeep/cargo"
+        }
+    },
+    "modules": [
+        {
+            "name": "barkeep",
+            "buildsystem": "simple",
+            "build-options": {
+                "build-args": [
+                    "--share=network"
+                ]
+            },
+            "build-commands": [
+                "cargo build --release -p barkeep",
+                "install -Dm755 target/release/barkeep /app/bin/barkeep",
+                "install -Dm644 app/resources/net.dunevent.Barkeep.desktop /app/share/applications/net.dunevent.Barkeep.desktop",
+                "install -Dm644 app/resources/net.dunevent.Barkeep.svg /app/share/icons/hicolor/scalable/apps/net.dunevent.Barkeep.svg",
+                "install -Dm644 app/resources/net.dunevent.Barkeep-symbolic.svg /app/share/icons/hicolor/symbolic/apps/net.dunevent.Barkeep-symbolic.svg",
+                "install -Dm644 app/resources/net.dunevent.Barkeep.metainfo.xml /app/share/metainfo/net.dunevent.Barkeep.metainfo.xml"
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "..",
+                    "skip": [
+                        "target",
+                        ".flatpak",
+                        ".flatpak-builder",
+                        "dist",
+                        ".git"
+                    ]
+                }
+            ]
+        }
+    ]
+}

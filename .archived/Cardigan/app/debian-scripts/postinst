@@ -1,0 +1,15 @@
+#!/bin/sh
+# Recompiles the GSettings schema cache after this package installs
+# sm.puri.phosh.plugins.barkeep.gschema.xml -- needed because cargo-deb
+# (unlike debhelper's own dh_install) has no automatic GSettings schema
+# trigger handling. Without this, the .xml file itself would be
+# correctly installed but gio::Settings::new would still fail to find
+# it at runtime, since GSettings actually reads from the *compiled*
+# gschemas.compiled cache, not the raw .xml files directly.
+set -e
+
+if [ "$1" = "configure" ] && command -v glib-compile-schemas >/dev/null 2>&1; then
+    glib-compile-schemas /usr/share/glib-2.0/schemas >/dev/null 2>&1 || true
+fi
+
+exit 0

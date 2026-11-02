@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  NOTE ON CONFIDENCE: gresource path convention (icons/scalable/actions/)
+  matches how GTK's icon theme lookup expects bundled resource icons to
+  be laid out under an IconTheme resource path -- not compiled/verified
+  against a real build here.
+-->
+<gresources>
+  <gresource prefix="/net/dunevent/Barkeep/icons/scalable/actions">
+    <file>external-link-symbolic.svg</file>
+    <file>shoe-box-symbolic.svg</file>
+    <file>brush-symbolic.svg</file>
+    <file>checkbox-checked-symbolic.svg</file>
+    <file>checkbox-symbolic.svg</file>
+  </gresource>
+</gresources>

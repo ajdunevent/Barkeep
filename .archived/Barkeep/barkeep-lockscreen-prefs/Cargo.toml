@@ -1,0 +1,23 @@
+[package]
+name = "barkeep-lockscreen-prefs"
+version = "0.1.0"
+edition = "2021"
+description = "Preferences dialog for the Barkeep lock-screen plugin -- a separate GIOModule from barkeep-lockscreen itself, per the real phosh plugin convention (ticket-box.desktop.in.in's own [Prefs] section points at a distinct .so from its own [Plugin] section)."
+license = "GPL-3.0-or-later"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+barkeep-core = { path = "../barkeep-core" }
+# Same versions/reasoning as barkeep-lockscreen's own Cargo.toml -- see
+# that file's own comment. Not shared as a workspace dependency default
+# since these two plugin crates, though they'll usually move in
+# lockstep, are still genuinely separate build artifacts loaded
+# independently by Phosh, and pinning each explicitly keeps that
+# independence visible rather than implicit.
+gtk = { version = "0.9", package = "gtk4", features = ["v4_12"] }
+adw = { version = "0.7", package = "libadwaita", features = ["v1_5"] }
+gio = "0.20"
+glib = "0.20"
+uuid = { version = "1", features = ["v4", "serde"] }

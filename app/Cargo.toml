@@ -1,0 +1,60 @@
+[package]
+name = "barkeep"
+version = "0.1.0"
+edition = "2021"
+description = "A privacy-friendly loyalty card wallet for the Phosh mobile shell"
+license = "GPL-3.0-or-later"
+
+[dependencies]
+barkeep-core = { path = "../barkeep-core" }
+gtk = { version = "0.9", package = "gtk4", features = ["v4_12"] }
+adw = { version = "0.7", package = "libadwaita", features = ["v1_5"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+gstreamer = "0.23"
+gstreamer-app = "0.23"
+gstreamer-video = "0.23"
+
+# Reconstructed here -- this section was missing from the Cargo.toml
+# snapshot read earlier this session, which in hindsight was very
+# likely an incomplete/stale upload rather than this project's real,
+# working file (build.rs has clearly been compiling successfully all
+# session, and it needs exactly this crate to do so at all). Version
+# confirmed directly against the official gtk4-rs repository's own
+# example Cargo.toml, which pins the exact same gtk4/libadwaita
+# versions this project already uses.
+[build-dependencies]
+glib-build-tools = "0.20"
+
+# Built via cargo-deb (https://github.com/kornelski/cargo-deb, the
+# actual crates.io package that name installs -- confirmed directly
+# against that specific repo's own Cargo.toml after finding a
+# similarly-named but different, apparently less-maintained project at
+# the same command name; not the official Debian Rust Team's own
+# dh-cargo/debcargo tooling, which explicitly doesn't support
+# workspaces at all per two independent official Debian sources).
+# Invoke from the workspace root as:
+#   cargo deb -p barkeep
+# (barkeep is this crate's own [package] name -- cargo-deb's own docs
+# confirm -p selects which crate's manifest supplies the package-level
+# metadata below).
+#
+# Just this crate's own binary -- no lock-screen plugin or other
+# packaged artifacts in this workspace.
+[package.metadata.deb]
+maintainer = "AJ Dunevent <aj@dunevent.net>"
+copyright = "2026, AJ Dunevent <aj@dunevent.net>"
+assets = [
+    ["target/release/barkeep", "usr/bin/", "755"],
+    # App-launcher integration -- separate from resources/barkeep.gresource.xml's
+    # own in-app UI icons (compiled directly into the binary via
+    # glib-build-tools, a completely different mechanism), since Phosh
+    # itself needs to find and display this icon before the app has ever
+    # run at all, which only works via plain, standalone files on disk
+    # under the standard freedesktop.org hicolor icon theme paths, not
+    # anything embedded in the binary. Filenames must match the app ID
+    # exactly (dots, not underscores) for the .desktop file's Icon= line
+    # to resolve via icon theme lookup.
+    ["resources/net.dunevent.Barkeep.desktop", "usr/share/applications/", "644"],
+    ["resources/net.dunevent.Barkeep.svg", "usr/share/icons/hicolor/scalable/apps/net.dunevent.Barkeep.svg", "644"],
+    ["resources/net.dunevent.Barkeep-symbolic.svg", "usr/share/icons/hicolor/symbolic/apps/net.dunevent.Barkeep-symbolic.svg", "644"],
+]

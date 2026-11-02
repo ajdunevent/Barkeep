@@ -1,0 +1,96 @@
+app-id: net.dunevent.Barkeep
+runtime: org.gnome.Platform
+runtime-version: '50'
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+command: barkeep
+
+# Confirmed directly against this app's own real code, not a generic
+# template:
+#   --device=all: camera.rs tries four GStreamer source elements in
+#     order (droidcamsrc, libcamerasrc, pipewiresrc, v4l2src), falling
+#     through on failure. This was originally going to be the narrower
+#     --socket=pipewire -- pipewiresrc alone did prove genuinely
+#     reachable as a fallback in direct, on-device testing (confirmed
+#     by masking droidcamsrc out of the candidate list entirely and
+#     re-running: the app fell through to pipewiresrc successfully) --
+#     but that same real-device test also showed pipewiresrc itself was
+#     unusably slow for actual camera scanning on this specific
+#     hardware (a FuriLabs FLX1S): roughly 2 frames per minute,
+#     degrading further from there. droidcamsrc -- which bridges
+#     directly into this device's own real Android camera HAL, with
+#     whatever hardware acceleration the physical ISP provides -- is
+#     confirmed as this device's own actual, real first-choice pick
+#     (direct, on-device diagnostic output, not assumed), and has no
+#     portal/PipeWire-bridged path at all, unlike libcamerasrc/v4l2src
+#     (both of which PipeWire itself can transparently bridge to via its
+#     own SPA plugins, per libcamera's own official docs recommending
+#     exactly this architecture) -- so reaching it at all needs this
+#     broader device grant. This is a deliberate, evidence-backed choice
+#     to match the .deb build's own real camera behavior on this
+#     specific, real hardware, not a default reached for out of
+#     convenience.
+#   --system-talk-name=org.freedesktop.login1: brightness.rs's own
+#     primary, confirmed-working-on-real-hardware mechanism
+#     (logind_set_brightness, over the *system* bus specifically --
+#     confirmed correct syntax directly from the official Flatpak docs'
+#     own "Debugging" page, which uses this exact bus name as its own
+#     worked example).
+#   --talk-name=org.gnome.SettingsDaemon.Power: brightness.rs's own
+#     session-bus fallback (dbus_get_brightness/dbus_set_brightness),
+#     still genuinely present in the real code for a real GNOME desktop
+#     session, not just the logind path used on the actual target
+#     device (a FuriLabs FLX1S) -- granted since the code itself still,
+#     genuinely falls back to it.
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  # --device=dri is now redundant with --device=all below (which
+  # already grants every user device) -- left explicit anyway, since it
+  # documents *why* GPU access is needed on its own, independent of the
+  # broader, camera-specific grant.
+  - --device=dri
+  - --device=all
+  - --system-talk-name=org.freedesktop.login1
+  - --talk-name=org.gnome.SettingsDaemon.Power
+
+build-options:
+  append-path: /usr/lib/sdk/rust-stable/bin
+  env:
+    CARGO_HOME: /run/build/barkeep/cargo
+    CARGO_NET_OFFLINE: 'true'
+
+modules:
+  - name: barkeep
+    buildsystem: simple
+    build-commands:
+      # No --workspace, no explicit -p for barkeep-core -- this
+      # workspace's own root Cargo.toml already sets default-members to
+      # [app, barkeep-core] (done specifically to keep the lock-screen
+      # plugin crates, barkeep-lockscreen/barkeep-lockscreen-prefs,
+      # out of the main app's own default build while that work is
+      # paused), so a plain, unqualified `cargo build` already only
+      # touches exactly what this Flatpak needs, automatically.
+      - cargo --offline fetch --manifest-path Cargo.toml --verbose
+      - cargo build --offline --release
+      - install -Dm755 target/release/barkeep /app/bin/barkeep
+      - install -Dm644 app/resources/net.dunevent.Barkeep.desktop /app/share/applications/net.dunevent.Barkeep.desktop
+      - install -Dm644 app/resources/net_dunevent_Barkeep.svg /app/share/icons/hicolor/scalable/apps/net.dunevent.Barkeep.svg
+      - install -Dm644 app/resources/net_dunevent_Barkeep-symbolic.svg /app/share/icons/hicolor/symbolic/apps/net.dunevent.Barkeep-symbolic.svg
+    sources:
+      # type: dir, path: . -- correct for local, iterative build/test
+      # only. Flathub submission itself needs a real, pinned source
+      # instead (type: git with a tag/commit, or type: archive pointing
+      # at a real release tarball) -- revisit this specific entry when
+      # actually publishing, not before.
+      - type: dir
+        path: .
+      # Generated directly from this workspace's own real, uploaded
+      # Cargo.lock (749 real entries, real crates.io URLs/checksums) --
+      # if this Cargo.lock is ever regenerated (a dependency added,
+      # removed, or updated), re-run flatpak-cargo-generator.py against
+      # the new one and replace this file; it isn't regenerated
+      # automatically.
+      - cargo-sources.json
