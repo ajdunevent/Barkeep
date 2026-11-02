@@ -18,8 +18,8 @@ Barkeep keeps everything local. It has no accounts and makes no network connecti
 ### Flatpak
 
 ```
-flatpak remote-add --user --if-not-exists dunevent https://ajdunevent.github.io/flatpak-repo/index.flatpakrepo
-flatpak install --user dunevent net.dunevent.Barkeep
+flatpak remote-add --user --if-not-exists ajhub https://ajdunevent.github.io/AJHub/index.flatpakrepo
+flatpak install --user ajhub net.dunevent.Barkeep
 ```
 
 Release bundles for x86_64 and aarch64 are also attached to each GitHub release.

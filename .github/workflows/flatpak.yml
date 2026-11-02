@@ -8,13 +8,13 @@
 # hosted on GitHub Pages. Its README describes the setup. Contract with it:
 #   - Assets are named <AppName>-<arch>-latest.flatpak, where AppName is the
 #     last component of the app ID (net.dunevent.Ralf gives Ralf).
-#   - The project has a line in flatpak-repo/apps.txt: "<owner>/<repo> <AppName>".
+#   - The project has a line in AJHub/apps.txt: "<owner>/<repo> <AppName>".
 #   - Secret FLATPAK_REPO_TOKEN (fine-grained token, "Actions: Read and write"
-#     on flatpak-repo only) lets the release job start flatpak-repo's publish
-#     workflow. Without it, flatpak-repo picks up releases on its own schedule
+#     on AJHub only) lets the release job start AJHub's publish
+#     workflow. Without it, AJHub picks up releases on its own schedule
 #     (every six hours).
 #
-# flatpak-repo builds its landing page and README table from each project:
+# AJHub builds its landing page and README table from each project:
 #   - The description is the GitHub repository description ("About" box).
 #   - The icon is read from the app's own bundle, so the manifest must install
 #     it as share/icons/hicolor/scalable/apps/<app ID>.svg (or a 128x128,
