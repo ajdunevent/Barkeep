@@ -6,8 +6,13 @@
   <name>Barkeep</name>
   <summary>Loyalty card wallet</summary>
   <developer id="net.dunevent">
-    <name>AJ Dunevent</name>
+    <name>Barkeep contributors</name>
   </developer>
+  <url type="homepage">https://dev.dunevent.net/aj/Barkeep</url>
+  <url type="bugtracker">https://dev.dunevent.net/aj/Barkeep/issues</url>
+  <url type="vcs-browser">https://dev.dunevent.net/aj/Barkeep</url>
+  <url type="donation">https://dunevent.net/donate</url>
+  <update_contact>aj@dunevent.net</update_contact>
   <description>
     <p>Barkeep, the BARcode KEEPer, is an adaptive loyalty card wallet for mobile Linux. Cards are stored on the device, scanned with the camera, and shown as barcodes ready for a checkout scanner.</p>
   </description>
@@ -16,8 +21,12 @@
     <binary>barkeep</binary>
   </provides>
   <content_rating type="oars-1.1"/>
+  <branding>
+    <color type="primary" scheme_preference="light">#ffd4ca</color>
+    <color type="primary" scheme_preference="dark">#1f5f3e</color>
+  </branding>
   <supports>
-    <control>pointer</control>
+    <control>pointing</control>
     <control>keyboard</control>
     <control>touch</control>
   </supports>
@@ -25,6 +34,27 @@
     <display_length compare="ge">360</display_length>
   </recommends>
   <releases>
-    <release version="0.1.0" date="2026-10-31"/>
+    <release version="0.1.1" date="2026-11-07">
+      <description>
+        <p>Metainfo updates.</p>
+        <ul>
+          <li>Project links, donation link and update contact</li>
+          <li>Developer shown as Barkeep contributors</li>
+          <li>Brand colours, and notes for the first release</li>
+          <li>The About dialog shows the same developer and links</li>
+        </ul>
+      </description>
+    </release>
+    <release version="0.1.0" date="2026-10-31">
+      <description>
+        <p>First release.</p>
+        <ul>
+          <li>Add cards by scanning with the camera or an image, or by typing them in</li>
+          <li>Full-screen barcodes and QR codes, with copy and share</li>
+          <li>Groups, search, stars, archiving and validity dates</li>
+          <li>Import from Catima, Loyalty Card Keychain, UBcards, FidMe, Voucher Vault and Apple Wallet, and export to a Barkeep file</li>
+        </ul>
+      </description>
+    </release>
   </releases>
 </component>

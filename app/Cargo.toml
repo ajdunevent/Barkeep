@@ -1,6 +1,6 @@
 [package]
 name = "barkeep"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "A privacy-friendly loyalty card wallet for the Phosh mobile shell"
 license = "GPL-3.0-or-later"

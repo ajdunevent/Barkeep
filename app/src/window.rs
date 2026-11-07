@@ -1837,12 +1837,13 @@ pub fn build_window(app: &adw::Application) -> adw::ApplicationWindow {
                 .application_name("Barkeep")
                 .application_icon(crate::APP_ID)
                 .version(env!("CARGO_PKG_VERSION"))
-                .developer_name("AJ")
+                .developer_name("Barkeep contributors")
+                .developers(["AJ Dunevent"])
                 .license_type(gtk::License::Gpl30)
-                .website("https://dev.dunevent.net/aj/")
+                .website("https://dev.dunevent.net/aj/Barkeep")
+                .issue_url("https://dev.dunevent.net/aj/Barkeep/issues")
                 .build();
-            about.add_link("Donate", "https://www.paypal.me/ajdunevent");
-            about.add_link("Fediverse", "https://social.dunevent.net/@aj");
+            about.add_link("Donate", "https://dunevent.net/donate");
             about.present(Some(&win));
         });
     }
