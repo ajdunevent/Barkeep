@@ -46,6 +46,7 @@
                         ".flatpak",
                         ".flatpak-builder",
                         "dist",
+                        ".archived",
                         ".git"
                     ]
                 }

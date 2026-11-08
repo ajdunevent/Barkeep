@@ -1,8 +1,9 @@
 name: Release
 
 # The FrogPak releaser (https://github.com/FrogPak/releaser) builds x86_64 and aarch64 Flatpak
-# bundles. A push to main whose newest metainfo <release> has no tag yet creates that tag and a
-# GitHub release carrying the bundles; any other push or pull request runs the checks only.
+# bundles. Tags are created on Forgejo (.forgejo/workflows/tag.yml) and carried here by the push
+# mirror; a pushed v* tag builds and publishes a GitHub release carrying the bundles. Pushes to
+# main and pull requests run the checks only.
 
 on:
   push:

@@ -2,7 +2,7 @@
 name = "barkeep-core"
 version = "0.1.1"
 edition = "2021"
-description = "Shared, GTK-free logic for Barkeep: card/group data model, JSON persistence, and barcode encode/decode. Used by both the main Barkeep app and the Phosh lock-screen plugin -- kept free of gtk4/libadwaita/gstreamer dependencies specifically so it doesn't force both consumers onto the same gtk-rs version (libphosh-rs pins an older one than the main app uses)."
+description = "Shared, GTK-free logic for Barkeep: card and group data model, JSON persistence, and barcode encode/decode."
 license = "GPL-3.0-or-later"
 
 [dependencies]

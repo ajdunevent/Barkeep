@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Barkeep
-Comment=A privacy-friendly loyalty card wallet
-Exec=barkeep
-Icon=net.dunevent.Barkeep
-Categories=Utility;
-Terminal=false
