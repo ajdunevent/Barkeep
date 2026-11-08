@@ -17,12 +17,11 @@ Barkeep keeps everything local. It has no accounts and makes no network connecti
 
 ### Flatpak
 
-```
-flatpak remote-add --user --if-not-exists ajhub https://ajdunevent.github.io/AJHub/index.flatpakrepo
-flatpak install --user ajhub net.dunevent.Barkeep
-```
+<a href="https://ajdunevent.github.io/AJHub/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://ajdunevent.github.io/AJHub/badges/button-dark.svg"><img src="https://ajdunevent.github.io/AJHub/badges/button-light.svg" alt="AJHub, published with FrogPak" height="48"></picture></a>
+(x86_64 and aarch64 builds)
 
-Release bundles for x86_64 and aarch64 are also attached to each GitHub release.
+<a href="https://furihub.github.io/repo/"><picture><source media="(prefers-color-scheme: dark)" srcset="https://furihub.github.io/repo/badges/button-dark.svg"><img src="https://furihub.github.io/repo/badges/button-light.svg" alt="FuriHub, published with FrogPak" height="48"></picture></a>
+(aarch64 builds)
 
 ### Debian package
 
